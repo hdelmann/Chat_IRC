@@ -48,6 +48,6 @@ int main(int ac, char **av)
         }
     }
     else
-        std::cout << "Usage : ./irc <port> <password>" << std::endl;
+        std::cout << "Usage : ./ircserv <port> <password>" << std::endl;
     return(1);
 }

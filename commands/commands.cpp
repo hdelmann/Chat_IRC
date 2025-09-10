@@ -384,6 +384,16 @@ std::string finalmodestr(std::string str)
     return str2;
 }
 
+int no_only_signe(std::string str)
+{
+    for (size_t i = 0; i < str.size(); i++)
+    {
+        if (str[i] != '+' && str[i] != '-')
+            return (1);
+    }
+    return (0);
+}
+
 unsigned long int howmuchneedparam(Message const &message)
 {
     int number = 0;
@@ -476,7 +486,7 @@ void mode_handler(User &user, Message const &message, ServerCore &core) {
                 if (i == 1)
                 {
                     chan->set_flags(MODE_l);
-                    if (ft_str_is_numeric(const_cast<char *>(message.get_params()[k].c_str())))
+                    if (!ft_str_is_numeric(const_cast<char *>(message.get_params()[k].c_str())))
                     {
                         continue;
                     }
@@ -541,7 +551,7 @@ void mode_handler(User &user, Message const &message, ServerCore &core) {
             {
                 if (i == 1)
                 {
-                    chan->set_flags(MODE_t);
+                    chan->set_flags(MODE_i);
                     addmode += 'i';
                 }
                 if (i == -1)
@@ -552,7 +562,8 @@ void mode_handler(User &user, Message const &message, ServerCore &core) {
             }
         }
         std::string final = finalmodestr(addmode) + addopt;
-        user.send_message(bld_rpl_modechg(user, *chan, final));
+        if (no_only_signe(final) == 1)
+            chan->broadcast(bld_rpl_modechg(user, *chan, final), NULL);
         return;
     }
     if (message.get_params().size() < 2 && message.get_params()[0] == user.get_nickname()) {
@@ -678,7 +689,7 @@ void topic_handler(User &user, Message const &message, ServerCore &core) {
         user.send_message(bld_err_nosuchchannel(message.get_params()[0]));
     else if(!channel->is_user_present(user.get_nickname()))
         bld_err_notonchannel(channel->get_name());
-    else if (channel->is_user_OP(user))
+    else if (channel->is_user_OP(user) || channel->get_flag(MODE_t) == 0)
     {
         if (message.get_params().size() == 2) {
             channel->set_topic_changer(user);

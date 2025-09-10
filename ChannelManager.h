@@ -19,6 +19,7 @@ class ChannelManager
         void    leave(User &user, std::string const message);
         void    leave(User &user, Channel &chan, std::string const message);
 
+
         int     create(User &user, std::string const &chan_name);
         
         ~ChannelManager(void){

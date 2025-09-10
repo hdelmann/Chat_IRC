@@ -7,4 +7,4 @@
 
 void handle_command(User &user, Message const &message, ServerCore &core);
 
-#endif /* COMMAND_HANDLER_H_ */
+#endif

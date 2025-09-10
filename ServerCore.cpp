@@ -127,7 +127,7 @@ void	ServerCore::disconnect_clients(std::vector<pollfd_t> &pfd)
         }
         if ((*it)->is_state(User::WAITING_FOR_QUIT))
         {
-            this->_channel_manager.leave(**it,  "YOU GOT DISCONECTED");
+            this->_channel_manager.leave(**it,  "USER GOT DISCONECTED");
             pfd.erase(pfd.begin() + std::distance(this->_user_manager.begin(), it) + 1);
             (*it)->close_connection();
             it = this->_user_manager.erase(it);
